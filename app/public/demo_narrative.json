@@ -1,0 +1,122 @@
+{
+  "title": "Food Safety & Quality Compliance",
+  "duration": "4 minutes",
+  "thesis": "Snowflake parses inspection reports with AI, indexes Thai FDA regulations for instant search, detects compliance anomalies, and auto-alerts quality teams \u2014 replacing paper-based food safety with AI-native compliance",
+  "tabs": [
+    {
+      "id": "executive-cockpit",
+      "persona": {
+        "name": "Dr. Pimchanok Vongsiri",
+        "role": "VP Food Safety & Quality",
+        "avatar": "\ud83d\udc69\u200d\ud83d\udcbc"
+      },
+      "talking_points": [
+        "Overall compliance rate: 91.4% \u2014 target is 98%. Six facilities below threshold.",
+        "Four hundred twenty million baht in non-compliance costs this year (recalls, fines, lost contracts).",
+        "Three critical pathogen detections in the last 30 days requiring product holds."
+      ],
+      "show": [
+        "Point at compliance rate gauge (91.4% vs 98% target)",
+        "Highlight \u0e3f420M cost KPI",
+        "Note critical pathogen alert badge"
+      ],
+      "call_out": "6 facilities below compliance \u2014 \u0e3f420M in non-compliance costs",
+      "transition": {
+        "next_tab": "ccp-monitoring",
+        "line": "Let's see which CCPs are driving the most violations."
+      }
+    },
+    {
+      "id": "ccp-monitoring",
+      "persona": {
+        "name": "Suthep Kruengsakul",
+        "role": "Quality Control Manager",
+        "avatar": "\ud83d\udc68\u200d\ud83d\udd2c"
+      },
+      "talking_points": [
+        "500K CCP monitoring records \u2014 thermal processing, metal detection, chemical limits.",
+        "Shrimp Line-04: cooking temperature CCP showing drift \u2014 7 deviations in 48 hours.",
+        "ML.ANOMALY_DETECTION confirms systematic pattern \u2014 not random variation."
+      ],
+      "show": [
+        "Show CCP dashboard with status indicators",
+        "Click Shrimp Line-04 to expand",
+        "Display anomaly detection overlay"
+      ],
+      "call_out": "7 deviations in 48 hours \u2014 anomaly confirmed by ML",
+      "transition": {
+        "next_tab": "regulation-search",
+        "line": "What do the regulations say about this level of deviation?"
+      }
+    },
+    {
+      "id": "regulation-search",
+      "persona": {
+        "name": "Suthep Kruengsakul",
+        "role": "Quality Control Manager",
+        "avatar": "\ud83d\udc68\u200d\ud83d\udd2c"
+      },
+      "talking_points": [
+        "Cortex Search indexes 300 regulatory documents \u2014 Thai FDA, CODEX, EU, Japan, US FDA.",
+        "Search 'maximum Salmonella limits for frozen shrimp exports to EU' returns exact regulation.",
+        "AI generates compliance gap analysis comparing current lab results to regulatory limits."
+      ],
+      "show": [
+        "Demo Cortex Search on food regulations",
+        "Show returned regulation with highlight",
+        "Display AI-generated gap analysis"
+      ],
+      "call_out": "300 regulations searchable \u2014 instant multi-market compliance answers",
+      "transition": {
+        "next_tab": "ask-ai",
+        "line": "Now let the VP ask the system directly."
+      }
+    },
+    {
+      "id": "ask-ai",
+      "persona": {
+        "name": "Dr. Pimchanok Vongsiri",
+        "role": "VP Food Safety & Quality",
+        "avatar": "\ud83d\udc69\u200d\ud83d\udcbc"
+      },
+      "talking_points": [
+        "Dr. Pimchanok asks: 'Which facilities are at highest recall risk right now?'",
+        "Cortex Analyst: Samut Sakhon Shrimp (risk 87), Pathum Thani Poultry (risk 72), Nakhon Pathom Meals (risk 64).",
+        "Switch to advisor: 'What should we do about Samut Sakhon?' \u2014 references inspection findings and recommends corrective actions."
+      ],
+      "show": [
+        "Type: 'Facilities ranked by recall risk score'",
+        "Show SQL + results",
+        "Switch to advisor mode"
+      ],
+      "call_out": "Two AI modes: SQL compliance analytics + regulatory advisory",
+      "transition": {
+        "next_tab": "architecture",
+        "line": "Every capability \u2014 native Snowflake SQL."
+      }
+    },
+    {
+      "id": "architecture",
+      "persona": {
+        "name": "Dr. Pimchanok Vongsiri",
+        "role": "VP Food Safety & Quality",
+        "avatar": "\ud83d\udc69\u200d\ud83d\udcbc"
+      },
+      "talking_points": [
+        "Seven Snowflake capabilities, six AWS services.",
+        "Textract/AI_PARSE_DOCUMENT turns inspection PDFs into structured compliance data.",
+        "Thailand is the world's kitchen \u2014 \u0e3f1.1T in food exports. This monitors 45 plants, 500K CCP records."
+      ],
+      "show": [
+        "Walk through architecture diagram",
+        "Toggle dual-build mode",
+        "Point at document intelligence pipeline"
+      ],
+      "call_out": "Document AI + regulatory search \u2014 food safety in one platform",
+      "transition": {
+        "next_tab": "",
+        "line": "That's Snowflake and AWS \u2014 better together for Thai food safety compliance."
+      }
+    }
+  ]
+}
