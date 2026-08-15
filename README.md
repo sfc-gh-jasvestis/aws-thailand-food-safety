@@ -9,7 +9,6 @@ Thailand exports ฿1.1 trillion in food annually — but 6 of 45 processing fac
 ```mermaid
 flowchart LR
     S3[S3 Data Landing] --> SP[Snowpipe]
-    SP --> RAW[RAW Tables]
     RAW --> DT[Dynamic Tables]
     DT --> ML[ML Functions]
     DT --> SEARCH[Cortex Search]
