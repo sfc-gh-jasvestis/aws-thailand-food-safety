@@ -121,7 +121,7 @@ Industry research and Snowflake customer outcomes:
 - **Food recalls cost manufacturers an average of $10M per event in direct costs alone** — [Food Safety Magazine](https://www.food-safety.com/)
 - **AI-powered food safety monitoring reduces critical violations by 40-60%** — [McKinsey Agriculture](https://www.mckinsey.com/industries/agriculture/our-insights)
 - **CP Foods (Thailand) processes 15 million chickens daily across its Thai facilities** — [CP Foods](https://www.cpfworldwide.com/en)
-
+- **Kraft Heinz** (Snowflake customer): built a unified data platform on Snowflake powering supply chain and demand forecasting across 200+ brands -- [snowflake.com/customers/kraft-heinz](https://www.snowflake.com/en/customers/all-customers/case-study/kraft-heinz/)
 
 ## Key Demo Numbers
 
