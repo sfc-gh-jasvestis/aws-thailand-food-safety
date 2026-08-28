@@ -134,10 +134,11 @@ export default function HomePage() {
           'Trace batch TH-2024-4891 back to source farm',
           'What are the most common contamination types this quarter?',
         ]}
-        onSubmit={async (question) => {
+        mode="both"
+        onSubmit={async (question, mode) => {
           return {
-            answer: `[Demo Mode] Response to: "${question}" Connect to Snowflake for live data.`,
-            sql: 'SELECT * FROM CURATED.SUMMARY LIMIT 10;',
+            answer: `[Demo Mode] Response to: "${question}" (${mode} mode). Connect to Snowflake for live data.`,
+            sql: mode === 'sql' ? 'SELECT * FROM CURATED.SUMMARY LIMIT 10;' : undefined,
           };
         }}
       />
