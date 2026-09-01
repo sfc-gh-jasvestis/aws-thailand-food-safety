@@ -32,15 +32,23 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+
+  // Look up a KPI value returned by /api/data (sourced from CURATED.KPI_SUMMARY).
+  // Falls back to the original literal so the card still renders if the API,
+  // or KPI_SUMMARY, is unavailable.
+  const kpiVal = (title: string, fallback: string): string =>
+    (data?.kpiCards as { title: string; value: string }[] | undefined)
+      ?.find((k) => k.title === title)?.value ?? fallback;
+
   const title = narrative?.title || 'SEA AWS Demo';
 
   const executiveCockpit = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Safety Score (Avg)" value="96.1%" status="neutral" />
-        <KPICard title="Active Recalls" value="2" status="danger" />
-        <KPICard title="Pending Audits" value="14" status="warning" />
-        <KPICard title="Certified Facilities" value="892" status="neutral" />
+        <KPICard title="Safety Score (Avg)" value={kpiVal('Safety Score (Avg)', '96.1%')} status="neutral" />
+        <KPICard title="Active Recalls" value={kpiVal('Active Recalls', '2')} status="danger" />
+        <KPICard title="Pending Audits" value={kpiVal('Pending Audits', '14')} status="warning" />
+        <KPICard title="Certified Facilities" value={kpiVal('Certified Facilities', '892')} status="neutral" />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="lg:col-span-1">
@@ -87,9 +95,9 @@ export default function HomePage() {
   const domainTab1 = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <KPICard title="Trace-to-Source" value="2.3 hrs" />
-        <KPICard title="Batch Coverage" value="99.1%" />
-        <KPICard title="Blockchain Records" value="2.4M" />
+        <KPICard title="Trace-to-Source" value={kpiVal('Trace-to-Source', '2.3 hrs')} />
+        <KPICard title="Batch Coverage" value={kpiVal('Batch Coverage', '99.1%')} />
+        <KPICard title="Blockchain Records" value={kpiVal('Blockchain Records', '2.4M')} />
       </div>
       <Chart
         data={data?.detail || [{ x: 'Mon', y: 24 }, { x: 'Tue', y: 28 }, { x: 'Wed', y: 22 }, { x: 'Thu', y: 31 }, { x: 'Fri', y: 26 }, { x: 'Sat', y: 19 }, { x: 'Sun', y: 23 }]}
