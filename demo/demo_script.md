@@ -1,109 +1,82 @@
-# Demo Script: Food Safety & Quality Compliance
-## ~4-Minute Recorded Walkthrough
-**Format**: Screen recording with voiceover
-**Target**: Customer meeting / booth loop / social share
-**Narrative**: "Snowflake parses inspection reports with AI, indexes Thai FDA regulations for instant search, detects compliance anomalies, and auto-alerts quality teams — replacing paper-based food safety with AI-native compliance"
-**Demo Mode**: Open app with `?demo=true` for presenter notes
+# Food Safety & Quality Compliance
 
----
+**Thailand - Food & Agribusiness**
+Use case: Food Safety & Regulatory Compliance
 
-## Two Personas
+> AI-powered food safety compliance for Thailand's ฿3.5T food industry — Textract parses Thai FDA inspection reports, Cortex Search indexes food regulations, and SNS pushes real-time alerts when critical violations are detected.
 
-| Persona | Role | Tool | What they care about |
-|---|---|---|---|
-| **Dr. Pimchanok Vongsiri** | VP Food Safety & Quality | React App (SPCS) | Compliance rates, recall risk, audit readiness, cost of non-compliance |
-| **Suthep Kruengsakul** | Quality Control Manager | Amazon QuickSight | Microbial test results, HACCP CCP monitoring, chemical residue levels, traceability |
+## Why Snowflake
 
----
+Snowflake parses inspection reports with AI, indexes Thai FDA regulations for instant search, detects compliance anomalies, and auto-alerts quality teams — replacing paper-based food safety with AI-native compliance
 
-## What's Built
+- **AI_PARSE_DOCUMENT on Thai FDA inspection reports** - Only demo extracting structured compliance data from Thai-language food safety documents
+- **Cortex Search on food regulations (Thai + international)** - Natural language search across Thai FDA, CODEX, EU, Japan, and US regulations
+- **Real-time CCP monitoring with ML.ANOMALY_DETECTION** - Anomaly detection on HACCP critical control points detecting systematic drift
+- **Thai food industry context** - 45 facilities producing seafood, poultry, and prepared meals for export markets
+- **Recall risk prediction** - Composite risk scoring combining lab results, CCP deviations, and inspection findings
+- **Multi-market regulatory compliance** - Simultaneous compliance checking against Thai, EU, Japan, and US food safety standards
 
-| Layer | Component | Detail |
+## What is deployed
+
+| | |
+|---|---|
+| Database | `THAILAND_FOOD_SAFETY` |
+| Service | `THAILAND_FOOD_SAFETY_APP` |
+| Compute pool | `SEA_DEMOS_THAILAND_POOL` |
+| Dimension table | `RAW.THAI_FOOD_INDUSTRY` (20 rows) |
+| Fact table | `RAW.CCP_MONITORING` (250,000 rows, 90 days) |
+| Curated layer | `CURATED.PERFORMANCE_SUMMARY`, `CURATED.TREND_ANALYSIS`, `CURATED.KPI_SUMMARY` |
+| Currency | THB (฿) |
+
+Regions in play: Bangkok, Chonburi, Rayong, Chiang Mai, Songkhla
+Segments: Microbiological, Chemical Residue, Labelling, Foreign Matter
+
+Dynamic tables are created suspended and refreshed on demand:
+
+```bash
+./refresh_demo_data.sh THAILAND_FOOD_SAFETY
+```
+
+## KPI cards
+
+Every card below is served live from `CURATED.KPI_SUMMARY`. The app keeps the
+original literal as a fallback, so it still renders if Snowflake is unreachable.
+
+| Card | Value | Backed by |
 |---|---|---|
-| **RAW** | 8 tables | FACILITIES (45), INSPECTION_REPORTS (680), LAB_RESULTS (120000), CCP_MONITORING (500000), CORRECTIVE_ACTIONS (4500), FOOD_REGULATIONS (300), TRACEABILITY (200000), THAI_FOOD_INDUSTRY (10) |
-| **CURATED** | 4 Dynamic Tables | FACILITY_COMPLIANCE_SCORE, CCP_DEVIATION_TRENDS, RECALL_RISK_INDEX, REGULATION_COMPLIANCE_GAP |
-| **ML** | ML.FORECAST + ML.ANOMALY_DETECTION | Forecasting + anomaly detection |
-| **AI** | AI_PARSE_DOCUMENT, AI_CLASSIFY, SUMMARIZE | Classification + extraction |
-| **Search** | Cortex Search | 300 documents indexed |
-| **Agent** | FOOD_SAFETY_AGENT | Semantic View + Search tools |
+| Safety Score (Avg) | `96.1%` | average per event |
+| Active Recalls | `2` | total across Thai Food Industry |
+| Pending Audits | `14` | total across Thai Food Industry |
+| Certified Facilities | `892` | total across Thai Food Industry |
+| Trace-to-Source | `2.3 hrs` | average per event |
+| Batch Coverage | `99.1%` | average per event |
+| Blockchain Records | `2.4M` | total across Thai Food Industry |
 
 
----
+## Demo flow
 
-## The Story
+1. Executive Cockpit
+2. CCP Monitoring
+3. Regulatory Intelligence
+4. Ask AI
+5. Architecture & Data
 
-Thailand exports ฿1.1 trillion in food annually — but 6 of 45 processing facilities are below compliance threshold, generating ฿420M in non-compliance costs. Paper-based inspection tracking and manual regulation lookup mean violations are caught too late. AI-native food safety monitoring closes the gap from weeks to hours.
+## Talking points
 
----
+- **91.4%** - compliance rate (target: 98%) — 6 facilities below threshold
+- **฿420M** - non-compliance costs this year (recalls, fines, lost contracts)
+- **3 pathogen** - critical detections in 30 days requiring product holds
+- **680 PDFs** - inspection reports parsed by AI_PARSE_DOCUMENT
+- **500K records** - CCP monitoring data points analyzed
+- **300 regulations** - indexed in Cortex Search (Thai + international)
 
-## Script
+## Business impact
 
-### [0:00–0:45] EXECUTIVE COCKPIT
-
-**Show**: Executive Cockpit tab
-
-> "Overall compliance rate: 91.4% — target is 98%. Six facilities below threshold."
-
-**Action**: Point at compliance rate gauge (91.4% vs 98% target)
-
-### [0:45–1:30] CCP MONITORING
-
-**Show**: CCP Monitoring tab
-
-> "500K CCP monitoring records — thermal processing, metal detection, chemical limits."
-
-**Action**: Show CCP dashboard with status indicators
-
-### [1:30–2:15] REGULATORY INTELLIGENCE
-
-**Show**: Regulatory Intelligence tab
-
-> "Cortex Search indexes 300 regulatory documents — Thai FDA, CODEX, EU, Japan, US FDA."
-
-**Action**: Demo Cortex Search on food regulations
-
-### [2:15–3:00] ASK AI
-
-**Show**: Ask AI tab
-
-> "Dr. Pimchanok asks: 'Which facilities are at highest recall risk right now?'"
-
-**Action**: Type: 'Facilities ranked by recall risk score'
-
-### [3:00–3:45] ARCHITECTURE & DATA
-
-**Show**: Architecture & Data tab
-
-> "Seven Snowflake capabilities, six AWS services."
-
-**Action**: Walk through architecture diagram
-
+- Thailand's food exports reached ฿1.1 trillion (US$31B) in 2023, ranking 13th globally (National Food Institute Thailand)
+- Food recalls cost manufacturers an average of $10M per event in direct costs alone (Food Safety Magazine)
+- AI-powered food safety monitoring reduces critical violations by 40-60% (McKinsey Agriculture)
+- CP Foods (Thailand) processes 15 million chickens daily across its Thai facilities (CP Foods)
 
 ---
-
-## Key Demo Differentiators
-
-1. **AI_PARSE_DOCUMENT on Thai FDA inspection reports** — Only demo extracting structured compliance data from Thai-language food safety documents
-2. **Cortex Search on food regulations (Thai + international)** — Natural language search across Thai FDA, CODEX, EU, Japan, and US regulations
-3. **Real-time CCP monitoring with ML.ANOMALY_DETECTION** — Anomaly detection on HACCP critical control points detecting systematic drift
-4. **Thai food industry context** — 45 facilities producing seafood, poultry, and prepared meals for export markets
-5. **Recall risk prediction** — Composite risk scoring combining lab results, CCP deviations, and inspection findings
-6. **Multi-market regulatory compliance** — Simultaneous compliance checking against Thai, EU, Japan, and US food safety standards
-
-
----
-
-## Demo Prep Checklist
-
-### Data Verification
-- [ ] `SELECT COUNT(*) FROM FOOD_SAFETY.RAW.CCP_MONITORING` → 500000
-- [ ] `SELECT COUNT(*) FROM FOOD_SAFETY.RAW.INSPECTION_REPORTS` → 680
-- [ ] `SELECT COUNT(*) FROM FOOD_SAFETY.CURATED.FACILITY_COMPLIANCE_SCORE WHERE COMPLIANCE_RATE < 0.98` → 6
-
-### ML Model Verification
-- [ ] `SELECT COUNT(*) FROM FOOD_SAFETY.ML.CCP_DEVIATION_FORECAST_RESULTS` → >0
-- [ ] `SELECT SUM(CASE WHEN IS_ANOMALY THEN 1 ELSE 0 END) FROM FOOD_SAFETY.ML.LAB_RESULT_ANOMALY_RESULTS` → >=10
-
-### AI/Agent Verification
-- [ ] `SELECT COUNT(*) FROM FOOD_SAFETY.AI.PARSED_INSPECTION_FINDINGS` → >600
-
+Generated from `generator/demo_specs/aws-thailand-food-safety.json`. Do not hand-edit: run
+`python3 generator/gen_repo_docs.py aws-thailand-food-safety` instead.
