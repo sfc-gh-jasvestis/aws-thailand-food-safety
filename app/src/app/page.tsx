@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="thailand"
+            labels={{ entity: 'Companies', event: 'CCP Checks', alert: 'Violations' }}
             regions={data?.regions}
             markers={[{"label": "Bangkok", "value": "FDA Lab: 247 tests/day", "color": "blue", "size": "lg"}, {"label": "Chiang Mai", "value": "Processing: recall active", "color": "red", "size": "md"}, {"label": "Surat Thani", "value": "Seafood: audit pending", "color": "amber", "size": "md"}, {"label": "Rayong", "value": "Plant: GMP certified", "color": "green", "size": "sm"}]}
             routes={[]}
@@ -84,8 +85,13 @@ export default function HomePage() {
         columns={[
           { key: 'id', header: 'Facility ID' },
           { key: 'name', header: 'Company' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'Audit Status' },
-          { key: 'value', header: 'Score' },
+          { key: 'm1', header: 'Score' },
+          { key: 'm2', header: 'Trace to Source' },
+          { key: 'm3', header: 'Batch Coverage' },
+          { key: 'events', header: 'CCP Checks' },
+          { key: 'alerts', header: 'Violations' },
         ]}
         data={data?.entities || []}
         title="Facility Compliance Status"
