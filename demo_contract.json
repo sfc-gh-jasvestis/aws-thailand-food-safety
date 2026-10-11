@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "repo": "aws-thailand-food-safety",
+  "canonical_database": "THAILAND_FOOD_SAFETY",
+  "operation": "on-demand",
+  "data_classification": "synthetic demonstration only",
+  "currency": "none (no monetary measures)",
+  "grains": {
+    "RAW.PROCESSING_LINES": "one food processing line per ID; 24 synthetic lines (seafood cooking, poultry chilling, ready meal packing, blast freezing) in six Thai plant cities, with HASH-seeded age, type, deviation propensity, shift and sanitation verification profile",
+    "RAW.CCP_READINGS": "one line-day per ENTITY_ID and EVENT_DATE; daily CCP aggregates, not individual sensor packets",
+    "RAW.VERIFICATION_KITS": "one required verification kit type per line at snapshot date",
+    "CURATED.PERFORMANCE_SUMMARY": "one line over the entire 90-day observation window",
+    "CURATED.TREND_ANALYSIS": "one day over all lines in the plant network",
+    "ML.DEVIATION_RISK_SCORES": "one line scored on its latest observation day",
+    "RAW.LIVE_TELEMETRY": "one CCP reading (simulated) loaded by Snowpipe or APP.SIMULATE_TELEMETRY",
+    "ML.ATP_ANOMALIES": "one line-day in the last 15 days, scored against the prior 75-day baseline"
+  },
+  "metrics": {
+    "line_availability_pct": {
+      "formula": "100 * SUM(OPERATING_HOURS) / NULLIF(SUM(PLANNED_HOURS), 0)",
+      "unit": "%",
+      "note": "OPERATING_HOURS are production hours not on CCP hold"
+    },
+    "ccp_deviations": {
+      "formula": "SUM(DEVIATION_COUNT)",
+      "unit": "events"
+    },
+    "hours_between_deviations": {
+      "formula": "SUM(OPERATING_HOURS) / NULLIF(SUM(DEVIATION_COUNT), 0)",
+      "unit": "hours",
+      "zero_deviations": "null; not an infinite or zero estimate"
+    },
+    "lines_monitored": {
+      "formula": "COUNT of RAW.PROCESSING_LINES",
+      "unit": "lines"
+    },
+    "kits_on_order": {
+      "formula": "SUM(ON_ORDER_QTY) at snapshot date",
+      "unit": "kits"
+    },
+    "verification_kit_coverage_pct": {
+      "formula": "100 * SUM(LEAST(ON_HAND_QTY, REQUIRED_QTY)) / NULLIF(SUM(REQUIRED_QTY), 0)",
+      "unit": "%"
+    },
+    "sanitation_compliance_pct": {
+      "formula": "100 * SUM(SANITATION_DONE) / NULLIF(SUM(SANITATION_DUE), 0)",
+      "unit": "%"
+    },
+    "first_pass_release_pct": {
+      "formula": "100 * SUM(RELEASED_PACKS) / NULLIF(SUM(TOTAL_PACKS), 0)",
+      "unit": "%"
+    }
+  },
+  "chart_bindings": {
+    "availability_trend": ["METRIC_DATE", "AVG_LINE_AVAILABILITY"],
+    "ccp_hold_by_cause": ["ROOT_CAUSE", "HOLD_HOURS"],
+    "sanitation_vs_release": ["SANITATION_COMPLIANCE_PCT", "RELEASE_PCT"],
+    "deviation_risk": ["ENTITY_ID", "DEVIATION_PROB_7D", "RISK_BAND"],
+    "hold_hours_forecast": ["FORECAST_DATE", "HOLD_HOURS", "LOWER_BOUND", "UPPER_BOUND"],
+    "quicksight_hold_hours_by_line": ["ENTITY_ID", "SUM(HOLD_HOURS)"],
+    "live_telemetry": ["LINE_ID", "EVENT_TS", "ATP_RLU", "CHILL_TEMP_C", "STATUS"],
+    "atp_anomalies": ["ENTITY_ID", "EVENT_DATE", "ATP", "EXPECTED", "UPPER_BOUND"],
+    "quicksight_deviation_risk": ["ENTITY_ID", "MAX(DEVIATION_PROB_7D)"]
+  },
+  "freshness": "MAX(EVENT_DATE) is an observation watermark; requestedAt is not freshness",
+  "required_capabilities": {
+    "core_pipeline": "Curated KPIs reconcile to a RAW recomputation",
+    "forecast_and_anomaly": "14-day plant-network CCP hold hours FORECAST; ATP swab ANOMALY_DETECTION per line (train 75 days, detect last 15)",
+    "search": "Cortex Search SEARCH.LINE_SOP_SEARCH over 15 synthetic CCP deviation SOPs (one per line type and deviation cause)",
+    "semantic_analytics": "semantic view APP.FOOD_SAFETY_ANALYTICS (CCP deviations sum to the KPI) and Cortex Agent APP.FOOD_SAFETY_AGENT using analyst + search tools",
+    "grounded_ai": "agent answers return generated SQL and SOP citations; action memo by Cortex AI_COMPLETE (Snowflake build) or Amazon Bedrock Claude via external-access UDF APP.BEDROCK_GENERATE (AWS build)",
+    "quicksight": "DIRECT_QUERY dashboard (line count, daily availability, CCP hold hours by line, deviation risk, IoT message count) through a read-only Snowflake service user",
+    "quicksight_q": "Amazon Q topic over the curated datasets for natural-language questions",
+    "aws_ingestion": "IoT Core rule -> S3 -> Snowpipe AUTO_INGEST into RAW.LIVE_TELEMETRY",
+    "notifications": "APP.LIVE_ALARM_ALERT logs new ALARM readings to APP.ALERT_LOG and emails via SYSTEM$SEND_EMAIL; alert and tasks suspended between demos",
+    "orchestration": "task graph APP.TASK_REFRESH_CURATED -> APP.TASK_RESCORE_RISK run on demand (EXECUTE TASK)",
+    "app_deployment": "SPCS service APP.TH_FOOD_SAFETY_APP; routes /api/data, /api/ask, /api/agent",
+    "deviation_risk_model": "Snowflake ML CLASSIFICATION of a CCP deviation in the next 7 days, evaluated on an out-of-time holdout against the base rate"
+  },
+  "builds": {
+    "snowflake": {
+      "database": "THAILAND_FOOD_SAFETY_SNOWFLAKE",
+      "app_setting": "DEMO_PLATFORM=snowflake"
+    },
+    "aws": {
+      "database": "THAILAND_FOOD_SAFETY_AWS",
+      "app_setting": "DEMO_PLATFORM=aws",
+      "capabilities": "see required_capabilities"
+    }
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "title": "Thai Food Safety CCP Monitor",
+  "duration": "6 minutes",
+  "thesis": "Snowflake turns daily critical control point readings from 24 synthetic seafood cooking, poultry chilling, ready meal packing and blast freezing lines in six Thai plant cities into availability KPIs, 7-day CCP deviation risk scores, ATP swab anomalies and grounded AI answers, all on curated dynamic tables.",
+  "tabs": [
+    {
+      "id": "executive-cockpit",
+      "persona": {
+        "name": "Siriporn Chaiwattana",
+        "role": "VP Food Safety and Quality (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Line availability, CCP deviations, hours between deviations and lines monitored for 24 processing lines across Samut Sakhon, Chonburi, Nakhon Pathom, Songkhla, Chiang Mai and Surat Thani.",
+        "Each KPI is an explicit numerator over a denominator in a curated dynamic table, traceable to line-day rows.",
+        "The CCP hold chart ranks deviation causes by hours on hold, led by metal detector rejects and cook core temperatures below limit."
+      ],
+      "show": [
+        "KPI cards",
+        "Daily line availability",
+        "CCP hold hours by deviation cause",
+        "Processing line table"
+      ],
+      "call_out": "One governed view of every critical control point in the network",
+      "transition": {
+        "next_tab": "predictive",
+        "line": "Which lines are likely to record the next CCP deviation?"
+      }
+    },
+    {
+      "id": "predictive",
+      "persona": {
+        "name": "Nattapong Srisuk",
+        "role": "HACCP Line Engineer (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Snowflake ML classification scores each line's probability of a CCP deviation in the next 7 days.",
+        "The holdout line reports precision and recall on the most recent labelled days, next to the base rate, so the model is judged honestly.",
+        "Anomaly detection flags ATP hygiene swab outliers per line, and the forecast projects plant-network CCP hold hours for 14 days."
+      ],
+      "show": [
+        "Holdout metrics",
+        "CCP deviation risk by line",
+        "CCP hold hours forecast",
+        "ATP swab anomalies"
+      ],
+      "call_out": "Evaluated ML that runs where the CCP data lives",
+      "transition": {
+        "next_tab": "planning",
+        "line": "Are the verification kits and sanitation rounds there to respond?"
+      }
+    },
+    {
+      "id": "planning",
+      "persona": {
+        "name": "Nattapong Srisuk",
+        "role": "HACCP Line Engineer (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Kits on order and verification kit coverage show whether core temperature probes, chlorine test kits, metal detector test pieces and reference thermometers are on hand.",
+        "Sanitation verification completion against first-pass release by line shows where the two move together; it is an association, not proof of cause.",
+        "The action memo drafts three prioritised actions from the KPI, deviation and risk tables only."
+      ],
+      "show": [
+        "Kits on order and kit coverage",
+        "Sanitation verification vs first-pass release",
+        "Action memo"
+      ],
+      "call_out": "Grounded draft actions, with a human deciding",
+      "transition": {
+        "next_tab": "live",
+        "line": "What happens when a CCP alarms on the line right now?"
+      }
+    },
+    {
+      "id": "live",
+      "persona": {
+        "name": "Nattapong Srisuk",
+        "role": "HACCP Line Engineer (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Live ATP swab and product temperature readings land in RAW.LIVE_TELEMETRY, from the in-account simulator or from AWS IoT Core through S3 and Snowpipe.",
+        "The Snowflake alert logs ALARM readings with an SOP hint and the line's current risk band, then emails the on-call QA lead."
+      ],
+      "show": [
+        "Messages loaded and lag",
+        "Latest readings",
+        "Alert log"
+      ],
+      "call_out": "From CCP alarm to corrective action in one platform",
+      "transition": {
+        "next_tab": "ask-ai",
+        "line": "Now ask the food safety agent directly."
+      }
+    },
+    {
+      "id": "ask-ai",
+      "persona": {
+        "name": "Siriporn Chaiwattana",
+        "role": "VP Food Safety and Quality (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "The Cortex Agent uses Cortex Analyst over the semantic view for metrics, and Cortex Search over 15 synthetic CCP deviation SOPs.",
+        "Each answer shows the generated SQL and the SOP IDs it cited."
+      ],
+      "show": [
+        "Ask a sample question",
+        "Generated SQL",
+        "SOP citations"
+      ],
+      "call_out": "Natural-language answers that can be audited",
+      "transition": {
+        "next_tab": "architecture",
+        "line": "Here is how it is built."
+      }
+    },
+    {
+      "id": "architecture",
+      "persona": {
+        "name": "Siriporn Chaiwattana",
+        "role": "VP Food Safety and Quality (fictional)",
+        "avatar": ""
+      },
+      "talking_points": [
+        "Two builds share one core: Snowflake only, or AWS + Snowflake (IoT Core, Bedrock, QuickSight and Amazon Q).",
+        "Everything shown is synthetic, seeded demo data, rebuilt reproducibly from the repo."
+      ],
+      "show": [
+        "Both architecture diagrams"
+      ],
+      "call_out": "One governed core, with an optional AWS edge",
+      "transition": {
+        "next_tab": "",
+        "line": "Questions?"
+      }
+    }
+  ]
+}
